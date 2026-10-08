@@ -10,8 +10,9 @@
 html,body{
 margin:0;
 overflow:hidden;
-background:black;
 touch-action:none;
+background:#000;
+font-family:sans-serif;
 }
 
 #game{
@@ -31,6 +32,19 @@ position:absolute;
 width:80px;
 height:80px;
 object-fit:contain;
+z-index:1;
+}
+
+#zombie{
+position:absolute;
+width:80px;
+height:80px;
+z-index:1;
+}
+
+#zombie svg{
+width:100%;
+height:100%;
 }
 
 #dark{
@@ -38,6 +52,7 @@ position:absolute;
 inset:0;
 background:black;
 pointer-events:none;
+z-index:50;
 }
 
 #magnifier{
@@ -46,7 +61,7 @@ width:120px;
 height:120px;
 pointer-events:none;
 transform:translate(-60px,-60px);
-z-index:1000;
+z-index:100;
 }
 
 #counter{
@@ -55,7 +70,10 @@ top:10px;
 left:10px;
 color:white;
 font-size:28px;
-z-index:1100;
+z-index:500;
+background:rgba(0,0,0,.5);
+padding:8px 15px;
+border-radius:10px;
 }
 
 #collection{
@@ -66,12 +84,12 @@ width:100%;
 display:flex;
 justify-content:center;
 gap:10px;
-z-index:1100;
+z-index:500;
 }
 
 #collection img{
-width:50px;
-height:50px;
+width:60px;
+height:60px;
 object-fit:contain;
 }
 
@@ -81,35 +99,349 @@ position:absolute;
 inset:0;
 background:rgba(0,0,0,.9);
 color:white;
-font-size:60px;
+z-index:2000;
 justify-content:center;
 align-items:center;
-z-index:2000;
+flex-direction:column;
+font-size:60px;
 }
+
+#clear button{
+font-size:30px;
+padding:15px 30px;
+margin-top:20px;
+}
+
+.star{
+position:absolute;
+font-size:30px;
+pointer-events:none;
+animation:sparkle .8s linear forwards;
+z-index:1500;
+}
+
+@keyframes sparkle{
+0%{
+opacity:1;
+transform:scale(.3);
+}
+100%{
+opacity:0;
+transform:translateY(-50px) scale(1.8);
+}
+}
+
 </style>
 </head>
+
 <body>
 
 <div id="game">
 
 <div id="scene">
 
-<img src="images/bat.png" class="item.png" class="itemsrc="images/witch.png"images/cat.png<div id="dark"></div>
+<img id="bat"g
 
-<img id="magnifier" 
+<img id="ghost" class="itemcandy" classg id="witch"g
 
-<div id="counter">
+<img id="cat" class="item" src="images/ viewBox="0 0 200 200">
+
+<circle cx="100" cy="90" r="55" fill="#8BCF76"/>
+
+<path d="M50 65 Q80 15 140 40 Q155 55 150 80 L50 80 Z"
+fill="#4a3325"/>
+
+<circle cx="78" cy="90" r="16" fill="white"/>
+<circle cx="122" cy="100" r="20" fill="white"/>
+
+<circle cx="72" cy="90" r="7"/>
+<circle cx="128" cy="100" r="8"/>
+
+<path d="M75 140 Q100 160 125 140"
+fill="none"
+stroke="#222"
+stroke-width="6"/>
+
+</svg>
+
+</div>
+
+</div>
+
+<div id="dark"></div>
+
+<img id="magnifier"
+src="images/ounter">
 0 / 6
 </div>
 
 <div id="collection"></div>
 
 <div id="clear">
-🎉 GAME CLEAR! 🎉
+<div>🎉 GAME CLEAR! 🎉</div>
+<div style="font-size:30px;margin-top:20px;">
+みんな みつけたね！
+</div>
+
+<button onclick="location.reload()">
+もういちど
+</button>
 </div>
 
 </div>
 
 <script>
 
-const 
+const dark=document.getElementById("dark");
+
+const items=[
+document.getElementById("bat"),
+document.getElementById("ghost"),
+document.getElementById("candy"),
+document.getElementById("witch"),
+document.getElementById("cat"),
+document.getElementById("zombie")
+];
+
+const placed=[];
+
+items.forEach(item=>{
+
+let x,y,ok=false;
+
+while(!ok){
+
+x=Math.random()*(window.innerWidth-120)+20;
+y=Math.random()*(window.innerHeight-260)+40;
+
+ok=true;
+
+placed.forEach(p=>{
+
+if(Math.hypot(x-p.x,y-p.y)<220){
+ok=false;
+}
+
+});
+
+}
+
+placed.push({x,y});
+
+item.style.left=x+"px";
+item.style.top=y+"px";
+
+item.dataset.found="false";
+
+});
+
+let found=0;
+
+function sparkle(x,y){
+
+for(let i=0;i<8;i++){
+
+const s=document.createElement("div");
+
+s.className="star";
+s.textContent="✨";
+
+s.style.left=
+(x+(Math.random()*60-30))+"px";
+
+s.style.top=
+(y+(Math.random()*60-30))+"px";
+
+document.body.appendChild(s);
+
+setTimeout(()=>{
+s.remove();
+},800);
+
+}
+
+}
+
+function playChime(){
+
+const ctx=
+new(window.AudioContext||
+window.webkitAudioContext)();
+
+const osc=ctx.createOscillator();
+const gain=ctx.createGain();
+
+osc.connect(gain);
+gain.connect(ctx.destination);
+
+osc.frequency.value=1000;
+
+gain.gain.value=.1;
+
+osc.start();
+
+osc.stop(
+ctx.currentTime+.2
+);
+
+}
+
+function playClear(){
+
+const ctx=
+new(window.AudioContext||
+window.webkitAudioContext)();
+
+[523,659,784].forEach((f,i)=>{
+
+const osc=
+ctx.createOscillator();
+
+const gain=
+ctx.createGain();
+
+osc.frequency.value=f;
+
+osc.connect(gain);
+gain.connect(ctx.destination);
+
+gain.gain.value=.1;
+
+osc.start(
+ctx.currentTime+i*.15
+);
+
+osc.stop(
+ctx.currentTime+i*.15+.3
+);
+
+});
+
+}
+
+function move(x,y){
+
+document.getElementById("magnifier")
+.style.left=x+"px";
+
+document.getElementById("magnifier")
+.style.top=y+"px";
+
+dark.style.clipPath=
+`circle(60px at ${x}px ${y}px)`;
+
+checkItems(x,y);
+
+}
+
+function checkItems(x,y){
+
+items.forEach(item=>{
+
+if(item.dataset.found==="true"){
+return;
+}
+
+const r=item.getBoundingClientRect();
+
+const cx=r.left+r.width/2;
+const cy=r.top+r.height/2;
+
+if(Math.hypot(x-cx,y-cy)<60){
+
+item.dataset.found="true";
+
+sparkle(cx,cy);
+
+playChime();
+
+item.animate(
+[
+{transform:"scale(1)"},
+{transform:"scale(1.4)"},
+{transform:"scale(1)"}
+],
+{duration:500}
+);
+
+if(item.tagName==="IMG"){
+
+const copy=document.createElement("img");
+
+copy.src=item.src;
+
+document
+.getElementById("collection")
+.appendChild(copy);
+
+}else{
+
+const copy=document.createElement("div");
+
+copy.style.width="60px";
+copy.style.height="60px";
+
+copy.innerHTML=item.innerHTML;
+
+document
+.getElementById("collection")
+.appendChild(copy);
+
+}
+
+found++;
+
+document
+.getElementById("counter")
+.textContent=
+found+" / 6";
+
+if(found===6){
+
+setTimeout(()=>{
+
+playClear();
+
+document
+.getElementById("clear")
+.style.display="flex";
+
+},600);
+
+}
+
+}
+
+});
+
+}
+
+document.addEventListener(
+"pointermove",
+e=>{
+move(
+e.clientX,
+e.clientY
+);
+}
+);
+
+document.addEventListener(
+"pointerdown",
+e=>{
+move(
+e.clientX,
+e.clientY
+);
+}
+);
+
+move(
+window.innerWidth/2,
+window.innerHeight/2
+);
+
+</script>
+
+</body>
+</html>
