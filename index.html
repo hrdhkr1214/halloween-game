@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>ハロウィンさがし</title>
+
+<style>
+
+html,body{
+margin:0;
+overflow:hidden;
+background:black;
+touch-action:none;
+}
+
+#game{
+position:relative;
+width:100vw;
+height:100vh;
+overflow:hidden;
+}
+
+#scene{
+position:absolute;
+inset:0;
+}
+
+.item{
+position:absolute;
+width:80px;
+height:80px;
+object-fit:contain;
+}
+
+#dark{
+position:absolute;
+inset:0;
+background:black;
+pointer-events:none;
+}
+
+#magnifier{
+position:absolute;
+width:120px;
+height:120px;
+pointer-events:none;
+transform:translate(-60px,-60px);
+z-index:1000;
+}
+
+#counter{
+position:absolute;
+top:10px;
+left:10px;
+color:white;
+font-size:28px;
+z-index:1100;
+}
+
+#collection{
+position:absolute;
+bottom:10px;
+left:0;
+width:100%;
+display:flex;
+justify-content:center;
+gap:10px;
+z-index:1100;
+}
+
+#collection img{
+width:50px;
+height:50px;
+object-fit:contain;
+}
+
+#clear{
+display:none;
+position:absolute;
+inset:0;
+background:rgba(0,0,0,.9);
+color:white;
+font-size:60px;
+justify-content:center;
+align-items:center;
+z-index:2000;
+}
+</style>
+</head>
+<body>
+
+<div id="game">
+
+<div id="scene">
+
+<img src="images/bat.png" class="item.png" class="itemsrc="images/witch.png"images/cat.png<div id="dark"></div>
+
+<img id="magnifier" 
+
+<div id="counter">
+0 / 6
+</div>
+
+<div id="collection"></div>
+
+<div id="clear">
+🎉 GAME CLEAR! 🎉
+</div>
+
+</div>
+
+<script>
+
+const 
